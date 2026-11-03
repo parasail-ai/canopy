@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canopy by Parasail — Multi-silicon model routing for coding agents</title>
+<meta name="description" content="Canopy routes every coding-agent step across fast silicon, cost-optimized silicon, and a frontier fallback. One OpenAI-compatible endpoint, no harness changes.">
+<meta name="theme-color" content="#030304">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'%3E%3Cpath d='M27.12 122.85 A74 74 0 0 1 52.43 53.32' fill='none' stroke='%2354e7ca' stroke-width='20'/%3E%3Cpath d='M63 45.92 A74 74 0 0 1 137 45.92' fill='none' stroke='%23fafafb' stroke-width='20'/%3E%3Cpath d='M147.57 53.32 A74 74 0 0 1 172.88 122.85' fill='none' stroke='%2306e0c0' stroke-width='20'/%3E%3Ccircle cx='100' cy='110' r='10' fill='%23fafafb'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#030304}
+a{color:#929395}a:hover{color:#fafafb}
+</style>
+</head>
+<body>
+<div style="width: 100%; min-height: 100%; box-sizing: border-box; background: #030304; color: #fafafb; font-family: Inter, 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center">
+
+<!-- NAV -->
+<nav style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+  <a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fafafb">
+    <svg width="44" height="33" viewBox="0 0 200 150" aria-hidden="true"><path d="M27.12 122.85 A74 74 0 0 1 52.43 53.32" fill="none" stroke="#54e7ca" stroke-width="20"/><path d="M63 45.92 A74 74 0 0 1 137 45.92" fill="none" stroke="#fafafb" stroke-width="20"/><path d="M147.57 53.32 A74 74 0 0 1 172.88 122.85" fill="none" stroke="#06e0c0" stroke-width="20"/><circle cx="100" cy="110" r="10" fill="#fafafb"/></svg>
+    <span style="font-size: 28px; font-weight: 600; letter-spacing: -0.6px">Canopy</span>
+    <span style="font-size: 13px; color: #78797b; border-left: 1px solid #252628; padding-left: 12px">by Parasail</span>
+  </a>
+  <div style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 15px">
+    <a href="#how" style="text-decoration: none">How it works</a>
+    <a href="#results" style="text-decoration: none">Results</a>
+    <a href="#detail" style="text-decoration: none">Under the hood</a>
+  </div>
+  <div style="display: flex; gap: 10px">
+    <a href="https://docs.parasail.io" style="text-decoration: none; color: #fafafb; background: #0b0c0e; border: 1px solid #252628; border-radius: 10px; padding: 12px 18px; font-size: 15px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Docs</a>
+    <a href="https://www.parasail.io/contact" style="text-decoration: none; color: #030304; background: #e7e8e9; border-radius: 10px; padding: 12px 18px; font-size: 15px; font-weight: 500; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Get access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="top" style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 96px 32px 72px; display: flex; flex-direction: column; gap: 32px">
+  <div style="display: flex; align-items: center; gap: 20px">
+    <svg width="96" height="72" viewBox="0 0 200 150" role="img" aria-label="Canopy mark"><path d="M27.12 122.85 A74 74 0 0 1 52.43 53.32" fill="none" stroke="#54e7ca" stroke-width="20"/><path d="M63 45.92 A74 74 0 0 1 137 45.92" fill="none" stroke="#fafafb" stroke-width="20"/><path d="M147.57 53.32 A74 74 0 0 1 172.88 122.85" fill="none" stroke="#06e0c0" stroke-width="20"/><circle cx="100" cy="110" r="10" fill="#fafafb"/></svg>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 64px; font-weight: 600; letter-spacing: -2px; line-height: 1">Canopy</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #54e7ca">Multi-silicon model routing · by Parasail</div>
+    </div>
+  </div>
+  <h1 style="margin: 0; font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; font-weight: 500; letter-spacing: -2px; max-width: 1150px">Routes every step across the right model <em style="font-style: normal; color: #54e7ca">and</em> the right silicon.</h1>
+  <p style="margin: 0; font-size: 22px; line-height: 1.45; color: #cdcecf; max-width: 720px">Model routers pick a lower-cost model. Canopy also picks the hardware: fast silicon when your agent is waiting, cost-optimized silicon when it isn't, and frontier models as the fallback when a step fails. One endpoint, two dimensions of routing, no harness changes.</p>
+  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+    <a href="https://www.parasail.io/contact" style="text-decoration: none; color: #030304; background: #e7e8e9; border-radius: 10px; padding: 14px 22px; font-size: 16px; font-weight: 500; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Get early access</a>
+    <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #cdcecf; background: #0b0c0e; border: 1px solid #1b1c1e; border-radius: 10px; padding: 14px 18px">model: "parasail/canopy"</code>
+  </div>
+</section>
+
+<!-- TAGLINES -->
+<section style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 112px; display: flex; flex-direction: column; gap: 36px">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 18px; font-weight: 500">Works with your agent.</div><div style="font-size: 14px; line-height: 1.5; color: #929395">OpenAI-compatible. Point Claude Code, OpenCode, Codex or anything else at one base URL.</div></div>
+    <div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 18px; font-weight: 500">Pays the premium only when it matters.</div><div style="font-size: 14px; line-height: 1.5; color: #929395">Fast silicon when latency counts, frontier tokens when a step needs them, cost-optimized tokens the rest of the time.</div></div>
+    <div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 18px; font-weight: 500">Judges every step.</div><div style="font-size: 14px; line-height: 1.5; color: #929395">Reads the tool results that come back and reruns a failed step on a smarter tier before your agent sees it.</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS (simple) -->
+<section id="how" style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 112px; display: flex; flex-direction: column; gap: 40px">
+  <div style="display: flex; flex-direction: column; gap: 12px; max-width: 960px">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #929395">How it works</div>
+    <h2 style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 500; letter-spacing: -1px">Your agent sees one model. Canopy sees fast silicon, cost-optimized silicon, and a frontier fallback.</h2>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0; padding-top: 14px">
+    <div style="display: flex; align-items: center; gap: 0; min-width: 0">
+      <div style="background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 22px 26px; min-width: 180px; display: flex; flex-direction: column; gap: 4px">
+        <div style="font-size: 18px; font-weight: 500">Coding agent</div>
+        <div style="font-size: 13px; color: #929395">OpenAI-compatible calls</div>
+      </div>
+      <svg width="56" height="24" viewBox="0 0 56 24" aria-hidden="true"><path d="M4 12 H44 M36 4 L46 12 L36 20" fill="none" stroke="#78797b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div style="border: 1px dashed #54e7ca; border-radius: 16px; padding: 28px 28px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 0; position: relative; flex: 0 1 auto; min-width: 560px">
+      <div style="position: absolute; top: -11px; left: 20px; background: #030304; padding: 0 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #54e7ca; display: flex; align-items: center; gap: 8px">
+        <svg width="18" height="14" viewBox="0 0 200 150" aria-hidden="true"><path d="M27.12 122.85 A74 74 0 0 1 52.43 53.32" fill="none" stroke="#54e7ca" stroke-width="20"/><path d="M63 45.92 A74 74 0 0 1 137 45.92" fill="none" stroke="#fafafb" stroke-width="20"/><path d="M147.57 53.32 A74 74 0 0 1 172.88 122.85" fill="none" stroke="#06e0c0" stroke-width="20"/><circle cx="100" cy="110" r="10" fill="#fafafb"/></svg>
+        parasail/canopy
+      </div>
+      <div style="background: #121315; border: 1px solid #54e7ca; border-radius: 12px; padding: 22px 26px; min-width: 180px; display: flex; flex-direction: column; gap: 4px">
+        <div style="font-size: 18px; font-weight: 500">Decision model</div>
+        <div style="font-size: 13px; color: #929395">picks a tier per step</div>
+      </div>
+      <svg width="64" height="200" viewBox="0 0 64 200" aria-hidden="true"><path d="M4 100 H28 V30 H52 M44 22 L54 30 L44 38 M28 100 H52 M44 92 L54 100 L44 108 M28 100 V170 H52 M44 162 L54 170 L44 178" fill="none" stroke="#78797b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 14px; width: 300px">
+        <div style="background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px"><div><div style="font-size: 17px; font-weight: 500">Fast tokens</div><div style="font-size: 13px; color: #929395">Cerebras</div></div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #54e7ca">speed</div></div>
+        <div style="background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px"><div><div style="font-size: 17px; font-weight: 500">Cost tokens</div><div style="font-size: 13px; color: #929395">Nvidia</div></div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #54e7ca">price</div></div>
+        <div style="background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px"><div><div style="font-size: 17px; font-weight: 500">Frontier tokens</div><div style="font-size: 13px; color: #929395">Anthropic</div></div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #54e7ca">quality</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 112px; display: flex; flex-direction: column; gap: 40px">
+  <div style="display: flex; flex-direction: column; gap: 12px; max-width: 760px">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #929395">Results · Terminal-Bench 4.0</div>
+    <h2 style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 500; letter-spacing: -1px">Give every option one dollar per task. See who solves the most, and how fast.</h2>
+    <p style="margin: 0; font-size: 17px; line-height: 1.5; color: #929395">Pass rate against wall clock, every run capped at $1. Each line is the same model on two kinds of silicon: fast hardware at the left end, cost-optimized at the right. Canopy sits above DeepSeek at both ends and can slide between them per step. Fable 5.1 is shown as its runs come back when cut off at the cap.</p>
+  </div>
+
+  <div style="background: #0b0c0e; border: 1px solid #1b1c1e; border-radius: 14px; padding: 28px; overflow-x: auto">
+    <svg width="100%" viewBox="0 0 800 420" role="img" aria-label="Pass rate versus wall clock under a one dollar cap: Canopy about 56 percent from 5 to 11 minutes, DeepSeek on Nvidia about 46 percent from 4 to 13 minutes, Fable 5.1 capped at one dollar about 38 percent at 4 minutes" style="min-width: 640px; display: block; font-family: Inter, sans-serif">
+      <g stroke="#1b1c1e" stroke-width="1">
+        <line x1="70" y1="340" x2="730" y2="340"/><line x1="70" y1="251" x2="730" y2="251"/><line x1="70" y1="162" x2="730" y2="162"/><line x1="70" y1="73" x2="730" y2="73"/>
+      </g>
+      <g stroke="#3a3b3e" stroke-width="1.5"><line x1="70" y1="20" x2="70" y2="340"/><line x1="70" y1="340" x2="730" y2="340"/></g>
+      <g stroke="#3a3b3e" stroke-width="1.5"><line x1="70" y1="340" x2="70" y2="348"/><line x1="235" y1="340" x2="235" y2="348"/><line x1="400" y1="340" x2="400" y2="348"/><line x1="565" y1="340" x2="565" y2="348"/><line x1="730" y1="340" x2="730" y2="348"/></g>
+      <g fill="#cdcecf" font-size="14" text-anchor="end">
+        <text x="58" y="345">30%</text><text x="58" y="256">40%</text><text x="58" y="167">50%</text><text x="58" y="78">60%</text>
+      </g>
+      <g fill="#cdcecf" font-size="14" text-anchor="middle">
+        <text x="70" y="368">0</text><text x="235" y="368">4</text><text x="400" y="368">8</text><text x="565" y="368">12</text><text x="730" y="368">16 min</text>
+      </g>
+      <text x="400" y="400" fill="#fafafb" font-size="15" font-weight="500" text-anchor="middle">Wall clock per task, minutes (median)</text>
+      <text x="16" y="180" fill="#fafafb" font-size="15" font-weight="500" text-anchor="middle" transform="rotate(-90 16 180)">Pass rate, within $1 per task</text>
+
+      <line x1="251.5" y1="188" x2="614.5" y2="199.6" stroke="#eb6834" stroke-width="2.5"/>
+      <rect x="244" y="180.5" width="15" height="15" fill="#eb6834"/>
+      <rect x="607" y="192" width="15" height="15" fill="#eb6834"/>
+      <text x="433" y="230" fill="#eb6834" font-size="15" font-weight="500" text-anchor="middle">DeepSeek on Nvidia</text>
+      <text x="238" y="193" fill="#78797b" font-size="12" text-anchor="end">$0.95</text>
+      <text x="628" y="204" fill="#78797b" font-size="12">$0.34</text>
+
+      <line x1="280.4" y1="97.3" x2="540.3" y2="109.8" stroke="#54e7ca" stroke-width="2.5"/>
+      <path d="M280.4 86 L291 106 L269.8 106 Z" fill="#54e7ca"/>
+      <path d="M540.3 98.5 L551 118.5 L529.6 118.5 Z" fill="#54e7ca"/>
+      <text x="410" y="86" fill="#54e7ca" font-size="15" font-weight="500" text-anchor="middle">Canopy</text>
+      <text x="266" y="102" fill="#78797b" font-size="12" text-anchor="end">$0.98</text>
+      <text x="556" y="114" fill="#78797b" font-size="12">$0.58</text>
+
+      <circle cx="230.9" cy="267.1" r="8" fill="#fafafb"/>
+      <text x="246" y="262" fill="#fafafb" font-size="15" font-weight="500">Fable 5.1, capped at $1</text>
+      <text x="246" y="279" fill="#929395" font-size="12">58% of runs cut off before finishing</text>
+      <text x="246" y="294" fill="#78797b" font-size="12">$1.00</text>
+    </svg>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #78797b; margin-top: 12px">Illustrative figures for layout review. Will be replaced by measured runs: 5 trials × 66 tasks, Terminus 2 harness, agent-active wall clock.</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <h3 style="margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.4px">Best option under each budget</h3>
+    <div style="overflow-x: auto; border: 1px solid #1b1c1e; border-radius: 14px">
+      <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 15px">
+        <thead>
+          <tr style="background: #0b0c0e; color: #929395; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: left">
+            <th style="padding: 14px 18px; font-weight: 500; border-bottom: 1px solid #1b1c1e">Constraint</th>
+            <th style="padding: 14px 18px; font-weight: 500; border-bottom: 1px solid #1b1c1e">Canopy</th>
+            <th style="padding: 14px 18px; font-weight: 500; border-bottom: 1px solid #1b1c1e">DeepSeek on Nvidia</th>
+            <th style="padding: 14px 18px; font-weight: 500; border-bottom: 1px solid #1b1c1e">Fable 5.1 direct</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e; color: #cdcecf">Under $1 per task</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e; color: #54e7ca; font-weight: 500">56% · 11 min · $0.58</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e">46% · 13 min · $0.34</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e; color: #929395">38% · cut off at cap</td></tr>
+          <tr><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e; color: #cdcecf">Under 6 minutes</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e; color: #54e7ca; font-weight: 500">57% · 5 min · $0.98</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e">47% · 4 min · $0.95</td><td style="padding: 16px 18px; border-bottom: 1px solid #1b1c1e">62% · 7 min · $2.10</td></tr>
+          <tr><td style="padding: 16px 18px; color: #cdcecf">Cost no object</td><td style="padding: 16px 18px; color: #54e7ca; font-weight: 500">57% · 5 min · $0.98</td><td style="padding: 16px 18px">47% · 4 min · $0.95</td><td style="padding: 16px 18px">62% · 7 min · $2.10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size: 14px; line-height: 1.5; color: #929395; max-width: 760px">Read across a row, not down a column. Canopy wins when you have a budget; Fable wins when you don't. The six-point gap at the top costs more than double per task.</div>
+  </div>
+</section>
+
+<!-- UNDER THE HOOD -->
+<section id="detail" style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 112px; display: flex; flex-direction: column; gap: 40px">
+  <div style="display: flex; flex-direction: column; gap: 12px; max-width: 760px">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #929395">Under the hood</div>
+    <h2 style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 500; letter-spacing: -1px">Routing happens per step, not per task.</h2>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #54e7ca">01 · The agent sends step n</div>
+      <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #cdcecf">A coding agent is a loop: it asks for a completion, runs the tool calls it gets back, and sends the results in with the next request. Canopy sits on that request. Every message already carries the previous step's tool output, so there is nothing extra to integrate.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #54e7ca">02 · The decision model picks a tier</div>
+      <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #cdcecf">Before generating anything, a small model looks at the request: how deep the trajectory is, whether tests are red, whether someone is waiting on the result. It decides two things at once — which model, and which silicon to run it on. Most steps go to an open model on cost-optimized hardware; latency-sensitive ones move to fast hardware. The decision costs a fraction of a cent.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #54e7ca">03 · The judge reads the tool results</div>
+      <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #cdcecf">When the results of that step come back on the next request, a judge grades them: did the tests move, did the edit apply, is the agent going in circles? A pass means the loop continues. A fail means the step is re-routed to a smarter tier and the better completion replaces the one the agent would have acted on next.</p>
+    </div>
+  </div>
+
+  <div style="background: #0b0c0e; border: 1px solid #1b1c1e; border-radius: 14px; padding: 32px; overflow-x: auto">
+    <div style="position: relative; width: 980px; height: 420px; margin: 0 auto; font-size: 14px">
+      <svg width="980" height="420" viewBox="0 0 980 420" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <rect x="190" y="52" width="372" height="330" rx="16" fill="none" stroke="#54e7ca" stroke-width="1" stroke-dasharray="6 4"/>
+        <g fill="none" stroke="#78797b" stroke-width="2" marker-end="url(#ah)">
+          <line x1="172" y1="206" x2="208" y2="206"/>
+          <path d="M362 206 H378 V114 H394"/>
+          <line x1="362" y1="206" x2="394" y2="206"/>
+          <path d="M362 206 H378 V298 H394"/>
+          <line x1="568" y1="206" x2="600" y2="206"/>
+          <line x1="754" y1="206" x2="800" y2="206"/>
+        </g>
+        <g fill="none" stroke="#78797b" stroke-width="2">
+          <path d="M544 114 H568 V206"/>
+          <path d="M544 298 H568 V206"/>
+        </g>
+        <path d="M879 176 V30 H287 V174" fill="none" stroke="#eb6834" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M879 236 V400 H95 V238" fill="none" stroke="#54e7ca" stroke-width="2" marker-end="url(#ah)"/>
+      </svg>
+      <div style="position: absolute; left: 204px; top: 358px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #54e7ca">parasail/canopy</div>
+      <div style="position: absolute; left: 20px; top: 176px; width: 150px; box-sizing: border-box; background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Coding agent</div><div style="font-size: 12px; color: #929395; margin-top: 2px">step n</div></div>
+      <div style="position: absolute; left: 212px; top: 176px; width: 150px; box-sizing: border-box; background: #121315; border: 1px solid #54e7ca; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Decision model</div><div style="font-size: 12px; color: #929395; margin-top: 2px">picks tier</div></div>
+      <div style="position: absolute; left: 398px; top: 88px; width: 146px; box-sizing: border-box; background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Fast tokens</div><div style="font-size: 12px; color: #929395; margin-top: 2px">Cerebras</div></div>
+      <div style="position: absolute; left: 398px; top: 180px; width: 146px; box-sizing: border-box; background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Cost tokens</div><div style="font-size: 12px; color: #929395; margin-top: 2px">Nvidia</div></div>
+      <div style="position: absolute; left: 398px; top: 272px; width: 146px; box-sizing: border-box; background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Frontier tokens</div><div style="font-size: 12px; color: #929395; margin-top: 2px">Anthropic</div></div>
+      <div style="position: absolute; left: 604px; top: 176px; width: 150px; box-sizing: border-box; background: #121315; border: 1px solid #252628; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Tool calls</div><div style="font-size: 12px; color: #929395; margin-top: 2px">bash · edit · test</div></div>
+      <div style="position: absolute; left: 804px; top: 176px; width: 150px; box-sizing: border-box; background: #121315; border: 1px solid #54e7ca; border-radius: 12px; padding: 14px 16px; white-space: nowrap"><div style="font-weight: 500; font-size: 16px">Judge model</div><div style="font-size: 12px; color: #929395; margin-top: 2px">pass / fail</div></div>
+      <div style="position: absolute; left: 330px; top: 8px; width: 480px; text-align: center; font-size: 13px; color: #eb6834; background: #0b0c0e; padding: 0 8px">fail → re-route step n on a smarter tier</div>
+      <div style="position: absolute; left: 250px; top: 404px; width: 480px; text-align: center; font-size: 13px; color: #54e7ca">pass → results become step n+1</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 112px">
+  <div style="background: #0b0c0e; border: 1px solid #1b1c1e; border-radius: 18px; padding: 56px 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 8px; max-width: 640px">
+      <div style="font-size: 36px; font-weight: 500; letter-spacing: -0.8px; line-height: 1.1">Swap one line. Keep your agent.</div>
+      <div style="font-size: 16px; color: #929395">Change the model string to <code style="font-family: 'JetBrains Mono', monospace; color: #cdcecf">parasail/canopy</code> and run your next task.</div>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap">
+      <a href="https://www.parasail.io/contact" style="text-decoration: none; color: #030304; background: #e7e8e9; border-radius: 10px; padding: 14px 22px; font-size: 16px; font-weight: 500; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Get early access</a>
+      <a href="https://www.parasail.io/contact" style="text-decoration: none; color: #fafafb; background: #121315; border: 1px solid #252628; border-radius: 10px; padding: 14px 22px; font-size: 16px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Talk to an engineer</a>
+    </div>
+  </div>
+</section>
+
+<footer style="width: 100%; max-width: 1280px; box-sizing: border-box; padding: 0 32px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 13px; color: #78797b; border-top: 1px solid #1b1c1e; padding-top: 28px">
+  <span>© 2026 Parasail.io · Canopy</span>
+  <div style="display: flex; gap: 20px"><a href="https://www.parasail.io/legal/privacy-policy" style="text-decoration: none">Privacy</a><a href="https://www.parasail.io/legal/terms-of-service" style="text-decoration: none">Terms</a><a href="https://docs.parasail.io" style="text-decoration: none">Docs</a></div>
+</footer>
+
+</div>
+</body>
+</html>
